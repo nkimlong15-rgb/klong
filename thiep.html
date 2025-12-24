@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Merry Christmas 🎄</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    height:100vh;
+    background:linear-gradient(to bottom,#00111a,#003366);
+    overflow:hidden;
+}
+
+#start-screen{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.9);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    z-index:20;
+    transition:opacity 1s;
+}
+
+#start-screen img{
+    width:150px;
+    animation:bounce 2s infinite;
+}
+
+#start-screen h1{
+    margin:20px;
+    text-align:center;
+}
+
+#start-btn{
+    padding:12px 35px;
+    font-size:1.2rem;
+    border:none;
+    border-radius:30px;
+    background:#e74c3c;
+    color:white;
+    cursor:pointer;
+}
+
+@keyframes bounce{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-15px);}
+}
+
+#main-content{
+    display:none;
+    height:100vh;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+.title{
+    position:absolute;
+    top:15%;
+    font-size:3rem;
+    color:white;
+    text-shadow:0 0 10px #fff,0 0 25px red;
+    animation:pulse 3s infinite;
+    z-index:5;
+}
+
+@keyframes pulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.2);}
+}
+.card{
+    background:rgba(255,255,255,0.95);
+    padding:30px;
+    border-radius:20px;
+    width:360px;
+    text-align:center;
+    z-index:5;
+    box-shadow:0 0 30px rgba(255,255,255,0.4);
+}
+
+.tree{
+    position:fixed;
+    bottom:0;
+    width:180px;
+    z-index:3;
+    animation:treeBlink 1s infinite alternate;
+}
+
+.tree.left{left:10px;}
+.tree.right{right:10px;transform:scaleX(-1);}
+
+@keyframes treeBlink{
+    from{filter:drop-shadow(0 0 5px #00ff99);}
+    to{filter:drop-shadow(0 0 25px #ff0000);}
+}
+
+.snow{
+    position:fixed;
+    top:-30px;
+    color:white;
+    pointer-events:none;
+    animation-name:snowFall, snowSwing;
+    animation-timing-function:linear, ease-in-out;
+}
+
+@keyframes snowFall{
+    to{transform:translateY(110vh);}
+}
+
+@keyframes snowSwing{
+    0%{margin-left:0;}
+    50%{margin-left:30px;}
+    100%{margin-left:0;}
+}
+
+.gift{
+    position:fixed;
+    top:-30px;
+    pointer-events:none;
+    animation:fall linear;
+    z-index:2;
+}
+
+@keyframes fall{
+    to{transform:translateY(110vh);}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+    <source src="https://cdn.pixabay.com/audio/2022/12/02/audio_7a32bb8b65.mp3" type="audio/mpeg">
+</audio>
+
+<div id="start-screen">
+    <img src="https://cdn-icons-png.flaticon.com/512/3893/3893071.png">
+    <h1>🎅 Ông già Noel đến rồi!<br>Bạn sẵn sàng chưa?</h1>
+    <button id="start-btn">Bắt đầu 🎄</button>
+</div>
+
+<img class="tree left" src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png">
+<img class="tree right" src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png">
+
+<div id="main-content">
+    <div class="title">MERRY CHRISTMAS 2025</div>
+
+    <div class="card">
+        <h2>Gửi Mẫn Mẫn 🎁</h2>
+        <p>Chúc cưng giáng sinh an lành nhóooo</p>
+        <p>Mong mọi điều tốt đẹp sẽ đến với cưngg.</p>
+        <p style="color:#e74c3c;font-weight:bold;">Merry Christmas ❤️</p>
+        <p style="font-size:0.8rem;">—Đệ mẫn—</p>
+    </div>
+</div>
+
+<script>
+const startBtn = document.getElementById("start-btn");
+const startScreen = document.getElementById("start-screen");
+const mainContent = document.getElementById("main-content");
+const music = document.getElementById("music");
+
+startBtn.onclick = ()=>{
+    startScreen.style.opacity = 0;
+    setTimeout(()=>{
+        startScreen.style.display="none";
+        mainContent.style.display="flex";
+        music.play();
+        snow3D();
+        giftFall();
+    },1000);
+};
+
+function snow3D(){
+    setInterval(()=>{
+        const snow = document.createElement("div");
+        snow.className="snow";
+        snow.innerHTML="❄";
+
+        const depth = Math.random(); // 0 → xa | 1 → gần
+
+        const size = 8 + depth * 18;
+        const duration = 6 - depth * 3;
+        const opacity = 0.3 + depth * 0.7;
+
+        snow.style.left = Math.random()*100 + "vw";
+        snow.style.fontSize = size + "px";
+        snow.style.opacity = opacity;
+        snow.style.zIndex = Math.floor(depth * 10);
+        snow.style.animationDuration = duration + "s, 4s";
+        snow.style.textShadow = `
+            0 0 ${4 + depth*6}px rgba(255,255,255,${opacity})
+        `;
+
+        document.body.appendChild(snow);
+        setTimeout(()=>snow.remove(), duration*1000);
+    }, 120);
+}
+
+function giftFall(){
+    setInterval(()=>{
+        const gift = document.createElement("div");
+        gift.className="gift";
+        gift.innerHTML="🎁";
+        gift.style.left=Math.random()*100+"vw";
+        gift.style.fontSize=Math.random()*15+15+"px";
+        gift.style.animationDuration=Math.random()*4+4+"s";
+        document.body.appendChild(gift);
+        setTimeout(()=>gift.remove(),8000);
+    },700);
+}
+</script>
+
+</body>
+</html>
